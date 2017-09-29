@@ -36,11 +36,6 @@ public class Ball extends Sprite {
     protected void beforeDraw(Canvas canvas, Paint paint) {
         super.beforeDraw(canvas, paint);
 
-        if (DEBUG) {
-            if (mEnemyBallQueue != null) {
-                Log.d(TAG, "beforeDraw: " + mEnemyBallQueue.size());
-            }
-        }
         //判断移动范围, 到达边界后反弹
         RectF movingRangeRectF = getMovingRangeRectF();
         if (movingRangeRectF != null) {
@@ -75,7 +70,7 @@ public class Ball extends Sprite {
                 if (delta >= 90 && delta <= 270) {
                     continue;
                 }
-                if (DEBUG) {
+                if (false && DEBUG) {
                     Log.d(TAG, "setupBalls: start = " + startAngle
                             + ", base = " + baseAngle
                             + ", end = " + endAngle

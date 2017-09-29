@@ -8,7 +8,7 @@ public class ItemData {
     public String title;
     public int level;
     public int resId;
-    public double power;
-    public double updatePrice;
+    public float power;
+    public float updatePrice;
     public boolean isCanBeUpdated = false;
 }

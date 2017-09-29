@@ -69,8 +69,8 @@ public final class BallsExtra {
         tap.title = context.getString(ball0[0]);
         tap.level = PreferencesUtils.getInt(context, Extra.Key.getBallLevelKey(-1), 0);
         tap.resId = ball0[1];
-        tap.power = Math.max(tap.level, 1 * Math.pow(1.1, tap.level - 1));
-        tap.updatePrice = Math.max(tap.level, 10 * Math.pow(1.15, tap.level));
+        tap.power = (float) Math.max(tap.level, 1 * Math.pow(1.1, tap.level - 1));
+        tap.updatePrice = (float) Math.max(tap.level, 10 * Math.pow(1.15, tap.level));
         list.add(tap);
 
 
@@ -86,8 +86,8 @@ public final class BallsExtra {
             itemData.title = context.getString(ball[0]);
             itemData.level = PreferencesUtils.getInt(context, Extra.Key.getBallLevelKey(i), 0);
             itemData.resId = ball[1];
-            itemData.power = Math.max(itemData.level, basePower * Math.pow(1.07, itemData.level - 1));
-            itemData.updatePrice = Math.max(itemData.level, basePrice * Math.pow(1.1, itemData.level - 1));
+            itemData.power = (float) Math.max(itemData.level, basePower * Math.pow(1.07, itemData.level - 1));
+            itemData.updatePrice = (float) Math.max(itemData.level, basePrice * Math.pow(1.1, itemData.level - 1));
             list.add(itemData);
         }
 

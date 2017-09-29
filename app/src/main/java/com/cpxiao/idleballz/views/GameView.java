@@ -11,7 +11,6 @@ import com.cpxiao.R;
 import com.cpxiao.androidutils.library.utils.PreferencesUtils;
 import com.cpxiao.gamelib.mode.common.Sprite;
 import com.cpxiao.gamelib.views.BaseSurfaceViewFPS;
-import com.cpxiao.idleballz.OnGameListener;
 import com.cpxiao.idleballz.mode.Ball;
 import com.cpxiao.idleballz.mode.EnemyBall;
 import com.cpxiao.idleballz.mode.extra.EnemyBallExtra;
@@ -56,7 +55,7 @@ public class GameView extends BaseSurfaceViewFPS {
 
         mPaint.setTextSize(0.03F * mViewWidth);
 
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 26; i++) {
             createBall();
         }
     }
@@ -72,6 +71,7 @@ public class GameView extends BaseSurfaceViewFPS {
                 .setMovingRangeRectF(mMovingRangeRectF)
                 .build();
         ball.setEnemyBallQueue(mEnemyBallQueue);
+        ball.setPower(10);
         mBallQueue.add(ball);
     }
 
@@ -79,7 +79,7 @@ public class GameView extends BaseSurfaceViewFPS {
         if (mFrame % 3 != 0) {
             return;
         }
-        if (mCreatedEnemyCount > mMaxEnemyCount) {
+        if (mCreatedEnemyCount >= mMaxEnemyCount) {
             return;
         }
 
@@ -99,8 +99,9 @@ public class GameView extends BaseSurfaceViewFPS {
                 .setW(wh)
                 .setH(wh)
                 .centerTo(cX, cY)
+                .setMovingRangeRectF(mMovingRangeRectF)
                 .build();
-        enemyBall.setValue(EnemyBallExtra.getEnemyBallValue(mGameLevel+20));
+        enemyBall.setValue(EnemyBallExtra.getEnemyBallValue(mGameLevel + 10));
         mEnemyBallQueue.add(enemyBall);
     }
 
@@ -121,7 +122,21 @@ public class GameView extends BaseSurfaceViewFPS {
     @Override
     protected void timingLogic() {
         createEnemyBall();
+
+        removeDestroyedSprite();
+
+        if (mEnemyBallQueue.isEmpty()) {
+            mGameLevel++;
+            mCreatedEnemyCount = 0;
+        }
     }
 
+    private void removeDestroyedSprite() {
+        for (EnemyBall enemyBall : mEnemyBallQueue) {
+            if (enemyBall.isDestroyed()) {
+                mEnemyBallQueue.remove(enemyBall);
+            }
+        }
+    }
 
 }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.cpxiao.AppConfig;
 import com.cpxiao.R;
+import com.cpxiao.idleballz.OnItemClicked;
 import com.cpxiao.idleballz.mode.ItemData;
 import com.cpxiao.idleballz.mode.extra.BallsExtra;
 
@@ -74,11 +75,14 @@ public class NormalRecyclerViewAdapter extends RecyclerView.Adapter<NormalRecycl
                     }
                     //the item ball level/power/price up
                     data.level++;
-
+                    data.power++;
+                    data.updatePrice++;
 
                     //the game view ball power up
 
-
+                    if (mOnItemClicked != null) {
+                        mOnItemClicked.onItemClicked(index, data.updatePrice);
+                    }
                 }
             });
         } else {
@@ -111,5 +115,11 @@ public class NormalRecyclerViewAdapter extends RecyclerView.Adapter<NormalRecycl
             mUpdateImageView = (ImageView) itemView.findViewById(R.id.updateImageView);
             mUpdateTextView = (TextView) itemView.findViewById(R.id.updateTextView);
         }
+    }
+
+    private OnItemClicked mOnItemClicked;
+
+    public void setOnItemClicked(OnItemClicked onItemClicked) {
+        mOnItemClicked = onItemClicked;
     }
 }
