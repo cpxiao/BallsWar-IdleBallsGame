@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Idle Ballz</string>
+
+    <string name="level">Level</string>
+
+    <string name="ball0">Tap</string>
+    <string name="ball1">Ball</string>
+    <string name="ball2">Ball</string>
+    <string name="ball3">Ball</string>
+    <string name="ball4">Ball</string>
+    <string name="ball5">Ball</string>
+    <string name="ball6">Ball</string>
+    <string name="ball7">Ball</string>
+    <string name="ball8">Ball</string>
+    <string name="ball9">Ball</string>
+    <string name="ball10">Ball</string>
+    <string name="ball11">Ball</string>
+    <string name="ball12">Ball</string>
+    <string name="ball13">Ball</string>
+    <string name="ball14">Ball</string>
+    <string name="ball15">Ball</string>
+    <string name="ball16">Ball</string>
+    <string name="ball17">Ball</string>
+    <string name="ball18">Ball</string>
+    <string name="ball19">Ball</string>
+    <string name="ball20">Ball</string>
+    <string name="ball21">Ball</string>
+    <string name="ball22">Ball</string>
+    <string name="ball23">Ball</string>
+    <string name="ball24">Ball</string>
+    <string name="ball25">Ball</string>
+    <string name="ball26">Ball</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="quit_msg">Quit the Game ?</string>
+</resources>
