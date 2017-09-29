@@ -10,7 +10,6 @@ import android.widget.TextView;
 import com.cpxiao.R;
 import com.cpxiao.androidutils.library.utils.PreferencesUtils;
 import com.cpxiao.gamelib.fragment.BaseZAdsFragment;
-import com.cpxiao.idleballz.OnGameListener;
 import com.cpxiao.idleballz.mode.ItemData;
 import com.cpxiao.idleballz.mode.extra.BallsExtra;
 import com.cpxiao.idleballz.mode.extra.Extra;
