@@ -6,13 +6,19 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 
 import com.cpxiao.R;
 import com.cpxiao.androidutils.library.utils.PreferencesUtils;
 import com.cpxiao.gamelib.mode.common.Sprite;
+import com.cpxiao.gamelib.mode.common.SpriteControl;
 import com.cpxiao.gamelib.views.BaseSurfaceViewFPS;
+import com.cpxiao.idleballz.OnEnemyBallTouchedListener;
 import com.cpxiao.idleballz.mode.Ball;
 import com.cpxiao.idleballz.mode.EnemyBall;
+import com.cpxiao.idleballz.mode.UIProgressBar;
+import com.cpxiao.idleballz.mode.UIText;
+import com.cpxiao.idleballz.mode.extra.BallsExtra;
 import com.cpxiao.idleballz.mode.extra.EnemyBallExtra;
 import com.cpxiao.idleballz.mode.extra.Extra;
 
@@ -24,7 +30,11 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class GameView extends BaseSurfaceViewFPS {
 
+    private UIText mScroeText, mLevelText;
+    private UIProgressBar mProgressBar;
+    private float mScore;
     private int mGameLevel;
+
     private ConcurrentLinkedQueue<Ball> mBallQueue = new ConcurrentLinkedQueue<>();
     private ConcurrentLinkedQueue<EnemyBall> mEnemyBallQueue = new ConcurrentLinkedQueue<>();
     private int mCreatedEnemyCount = 0;
@@ -54,6 +64,9 @@ public class GameView extends BaseSurfaceViewFPS {
         mMovingRangeRectF = new RectF(0, 0, mViewWidth, mViewHeight);
 
         mPaint.setTextSize(0.03F * mViewWidth);
+
+        mProgressBar = (UIProgressBar) new UIProgressBar.Build()
+                .build();
 
         for (int i = 0; i < 26; i++) {
             createBall();
@@ -101,7 +114,8 @@ public class GameView extends BaseSurfaceViewFPS {
                 .centerTo(cX, cY)
                 .setMovingRangeRectF(mMovingRangeRectF)
                 .build();
-        enemyBall.setValue(EnemyBallExtra.getEnemyBallValue(mGameLevel + 10));
+        enemyBall.setValue(EnemyBallExtra.getEnemyBallMaxValue(mGameLevel));
+
         mEnemyBallQueue.add(enemyBall);
     }
 
@@ -127,6 +141,9 @@ public class GameView extends BaseSurfaceViewFPS {
 
         if (mEnemyBallQueue.isEmpty()) {
             mGameLevel++;
+            if (mOnEnemyBallTouchedListener != null) {
+                mOnEnemyBallTouchedListener.onLevelUp(mGameLevel);
+            }
             mCreatedEnemyCount = 0;
         }
     }
@@ -139,4 +156,30 @@ public class GameView extends BaseSurfaceViewFPS {
         }
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        int action = event.getActionMasked();
+        if (action == MotionEvent.ACTION_DOWN || action == MotionEvent.ACTION_POINTER_DOWN) {
+            float x = event.getX();
+            float y = event.getY();
+            if (mOnEnemyBallTouchedListener != null) {
+                for (EnemyBall enemyBall : mEnemyBallQueue) {
+                    if (SpriteControl.isClicked(enemyBall, x, y)) {
+                        int tapLevel = PreferencesUtils.getInt(getContext(), Extra.Key.getItemLevelKey(0), 1);
+                        float tapPower = BallsExtra.getPower(0, tapLevel);
+                        enemyBall.deleteValue(tapPower);
+                        mOnEnemyBallTouchedListener.onEnemyBallTouchedListener(tapPower);
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+    private OnEnemyBallTouchedListener mOnEnemyBallTouchedListener;
+
+    public void setOnEnemyBallTouchedListener(OnEnemyBallTouchedListener listener) {
+        mOnEnemyBallTouchedListener = listener;
+
+    }
 }

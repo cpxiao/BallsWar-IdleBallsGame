@@ -6,7 +6,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 
 import com.cpxiao.gamelib.mode.common.Sprite;
-import com.cpxiao.idleballz.mode.extra.BallsExtra;
+import com.cpxiao.idleballz.mode.extra.GameExtra;
 
 /**
  * @author cpxiao on 2017/9/27.
@@ -40,7 +40,7 @@ public class EnemyBall extends Sprite {
         canvas.drawCircle(getCenterX(), getCenterY(), 0.5F * getWidth(), paint);
 
         paint.setColor(Color.BLACK);
-        canvas.drawText(BallsExtra.format1(value), getCenterX(), getCenterY() + 0.1F * getHeight(), paint);
+        canvas.drawText(GameExtra.format1(value), getCenterX(), getCenterY() + 0.1F * getHeight(), paint);
     }
 
 
@@ -49,4 +49,5 @@ public class EnemyBall extends Sprite {
             return new EnemyBall(this);
         }
     }
+
 }

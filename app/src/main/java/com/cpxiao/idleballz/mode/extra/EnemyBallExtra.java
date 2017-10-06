@@ -6,8 +6,9 @@ package com.cpxiao.idleballz.mode.extra;
 
 public final class EnemyBallExtra {
 
-
-    public static float getEnemyBallValue(int gameLevel) {
+    public static float getEnemyBallMaxValue(int gameLevel) {
         return (float) (4.0F * Math.pow(1.5, gameLevel));
     }
+
+
 }

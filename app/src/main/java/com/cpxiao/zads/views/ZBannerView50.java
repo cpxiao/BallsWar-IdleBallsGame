@@ -8,7 +8,7 @@ package com.cpxiao.zads.views;//package com.cpxiao.zads.views;
 //import android.view.Gravity;
 //import android.widget.FrameLayout;
 //import android.widget.ImageView;
-//import android.widget.TextView;
+//import android.widget.UIText;
 //
 //import com.bumptech.glide.Glide;
 //import com.cpxiao.AppConfig;
@@ -21,8 +21,8 @@ package com.cpxiao.zads.views;//package com.cpxiao.zads.views;
 //    private static final String TAG = ZBannerView50.class.getSimpleName();
 //
 //    private ImageView mIcon;
-//    private TextView mTitle;
-//    private TextView mDescription;
+//    private UIText mTitle;
+//    private UIText mDescription;
 //
 //    public ZBannerView50(Context context) {
 //        super(context);
@@ -34,13 +34,13 @@ package com.cpxiao.zads.views;//package com.cpxiao.zads.views;
 //        mIcon = new ImageView(c);
 //        mIcon.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
 //
-//        mTitle = new TextView(c);
+//        mTitle = new UIText(c);
 //        mTitle.setTextColor(Color.BLACK);
 //        mTitle.setSingleLine();
 //        mTitle.setMaxLines(1);
 //        mTitle.setEllipsize(TextUtils.TruncateAt.END);
 //
-//        mDescription = new TextView(c);
+//        mDescription = new UIText(c);
 //        mDescription.setTextColor(Color.GRAY);
 //        mDescription.setMaxLines(1);
 //        mDescription.setSingleLine();
