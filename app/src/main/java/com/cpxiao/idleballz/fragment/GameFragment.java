@@ -11,6 +11,7 @@ import com.cpxiao.R;
 import com.cpxiao.androidutils.library.utils.PreferencesUtils;
 import com.cpxiao.gamelib.fragment.BaseZAdsFragment;
 import com.cpxiao.idleballz.NormalRecyclerViewAdapter;
+import com.cpxiao.idleballz.OnGameListener;
 import com.cpxiao.idleballz.OnItemClicked;
 import com.cpxiao.idleballz.mode.ItemData;
 import com.cpxiao.idleballz.mode.extra.BallsExtra;
@@ -24,7 +25,6 @@ import java.util.List;
  */
 
 public class GameFragment extends BaseZAdsFragment {
-    private float mScore;
     private NormalRecyclerViewAdapter mAdapter;
     private GameView mGameView;
     private RecyclerView mRecyclerView;
@@ -38,14 +38,26 @@ public class GameFragment extends BaseZAdsFragment {
         return fragment;
     }
 
+    int updateCount = 0;
+
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        Context context = getHoldingActivity();
+        final Context context = getHoldingActivity();
         mDataList = BallsExtra.getDataList(context);
-        mScore = PreferencesUtils.getFloat(context, Extra.Key.COIN, Extra.Key.COIN_DEFAULT);
-        mDataList = BallsExtra.parseList(mScore, mDataList);
 
         mGameView = (GameView) view.findViewById(R.id.game_view);
+        mGameView.setOnGameListener(new OnGameListener() {
+            @Override
+            public void onCoinChange(float coin) {
+                int currentUpdateCount = BallsExtra.getUpdateCount(coin, mDataList);
+                if (updateCount != currentUpdateCount) {
+                    mDataList = BallsExtra.parseList(coin, mDataList);
+                    mGameView.post(mRunnable);
+                    updateCount = currentUpdateCount;
+                }
+
+            }
+        });
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.ballsRecyclerView);
         LinearLayoutManager manager = new LinearLayoutManager(context);
@@ -56,11 +68,14 @@ public class GameFragment extends BaseZAdsFragment {
         mAdapter = new NormalRecyclerViewAdapter(getContext(), mDataList);
         mAdapter.setOnItemClicked(new OnItemClicked() {
             @Override
-            public void onItemClicked(int index, float price) {
+            public void onItemClicked(int index, float price, int level) {
                 if (DEBUG) {
                     Log.d(TAG, "onItemClicked: ");
                 }
-
+                mAdapter.notifyItemChanged(index);
+                mGameView.deleteCoin(price);
+                mGameView.createNewBall(context, index);
+                PreferencesUtils.putInt(context, Extra.Key.getItemLevelKey(index), level);
             }
         });
         mRecyclerView.setAdapter(mAdapter);
@@ -68,9 +83,25 @@ public class GameFragment extends BaseZAdsFragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (mGameView != null) {
+            mGameView.save(getHoldingActivity());
+        }
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.fragment_game;
     }
 
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (mAdapter != null) {
+                mAdapter.notifyDataSetChanged();
+            }
+        }
+    };
 
 }

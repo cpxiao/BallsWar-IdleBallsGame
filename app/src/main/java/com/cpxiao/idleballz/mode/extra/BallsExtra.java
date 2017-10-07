@@ -20,13 +20,15 @@ public final class BallsExtra {
     private static final String TAG = BallsExtra.class.getSimpleName();
 
 
+    public static final int INDEX_STRING_ID = 0;
+    public static final int INDEX_DRAWABLE_ID = 1;
     private static final int[] tap = {R.string.ball0, R.drawable._0tap};
     private static final int[] ball1 = {R.string._1ball, R.drawable._1ball};
     private static final int[] ball2 = {R.string._2tennis, R.drawable._2tennis};
     private static final int[] ball3 = {R.string._3basketball, R.drawable._3basketball};
     private static final int[] ball4 = {R.string._4football, R.drawable._4football};
     private static final int[] ball5 = {R.string._5baseball, R.drawable._5baseball};
-    private static final int[] ball6 = {R.string._6star, R.drawable._6star};
+    private static final int[] ball6 = {R.string._6starball, R.drawable._6starball};
     private static final int[] ball7 = {R.string._7orange, R.drawable._7orange};
     private static final int[] ball8 = {R.string._8watermelon, R.drawable._8watermelon};
     private static final int[] ball9 = {R.string._9egg, R.drawable._9egg};
@@ -54,6 +56,14 @@ public final class BallsExtra {
             ball21, ball22, ball23, ball24, ball25
     };
 
+    public static int getItemCount() {
+        return ITEM_ARRAY.length;
+    }
+
+    public static int[] getItem(int index) {
+        return ITEM_ARRAY[index];
+    }
+
     public static List<ItemData> parseList(float coin, List<ItemData> mDataList) {
         for (int i = 0; i < mDataList.size(); i++) {
             ItemData data = mDataList.get(i);
@@ -62,12 +72,23 @@ public final class BallsExtra {
         return mDataList;
     }
 
+    public static int getUpdateCount(float coin, List<ItemData> mDataList) {
+        int count = 0;
+        for (int i = 0; i < mDataList.size(); i++) {
+            ItemData data = mDataList.get(i);
+            if (coin >= data.updatePrice) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     public static List<ItemData> getDataList(Context context) {
         List<ItemData> list = new ArrayList<>();
         for (int i = 0; i < ITEM_ARRAY.length; i++) {
             int[] item = ITEM_ARRAY[i];
             ItemData itemData = new ItemData();
-            itemData.title = context.getString(item[0]);
+            itemData.title = context.getString(item[INDEX_STRING_ID]);
             int defaultLevel;
             if (i == 0) {
                 defaultLevel = 1;
@@ -75,7 +96,7 @@ public final class BallsExtra {
                 defaultLevel = 0;
             }
             itemData.level = PreferencesUtils.getInt(context, Extra.Key.getItemLevelKey(i), defaultLevel);
-            itemData.resId = item[1];
+            itemData.resId = item[INDEX_DRAWABLE_ID];
             itemData.power = getPower(i, itemData.level);
             itemData.updatePrice = getUpdatePrice(i, itemData.level);
             list.add(itemData);

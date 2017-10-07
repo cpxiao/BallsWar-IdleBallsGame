@@ -9,4 +9,15 @@
     <color name="GameViewBg">#000000</color>
 
     <color name="scoreText">#f3de33</color>
+
+    <color name="progressBarBg">#000000</color>
+    <color name="progressBar">#f3de33</color>
+
+    <color name="gameLevelText">#ffffff</color>
+
+    <color name="coinText">#f2d033</color>
+
+    <string-array name="colorArray">
+        <item></item>
+    </string-array>
 </resources>

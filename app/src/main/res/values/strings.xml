@@ -8,8 +8,8 @@
     <string name="_2tennis">Tennis</string>
     <string name="_3basketball">Basketball</string>
     <string name="_4football">Football</string>
-    <string name="_5baseball">baseball</string>
-    <string name="_6star">Stat</string>
+    <string name="_5baseball">Baseball</string>
+    <string name="_6starball">Starball</string>
     <string name="_7orange">Orange</string>
     <string name="_8watermelon">Watermelon</string>
     <string name="_9egg">Egg</string>
@@ -23,7 +23,7 @@
     <string name="_17wheel">Wheel</string>
     <string name="_18pacman">Pacman</string>
     <string name="_19mine">Mine</string>
-    <string name="_20radioactive">RadioActive</string>
+    <string name="_20radioactive">Radioactive</string>
     <string name="_21moon">Moon</string>
     <string name="_22earth">Earth</string>
     <string name="_23neptune">Neptune</string>

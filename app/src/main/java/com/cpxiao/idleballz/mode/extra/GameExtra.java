@@ -1,7 +1,5 @@
 package com.cpxiao.idleballz.mode.extra;
 
-import android.util.Log;
-
 import com.cpxiao.AppConfig;
 
 import java.text.DecimalFormat;
@@ -13,58 +11,6 @@ import java.text.DecimalFormat;
 public final class GameExtra {
     private static final boolean DEBUG = AppConfig.DEBUG;
     private static final String TAG = GameExtra.class.getSimpleName();
-
-
-    /**
-     * power:   1,  1,  30,     90,     270,    810     ...
-     * price:   11, 1,  300,    1.8k,   10.8k,  64.8k   ...
-     */
-    public static float getPower(int itemIndex, int itemLevel) {
-        float basePower = 0;
-        float rate = 1.07F;
-        if (itemIndex < 0) {
-            if (DEBUG) {
-                Log.d(TAG, "getPower: ");
-                throw new IllegalArgumentException("itemIndex < 0");
-            }
-        } else if (itemIndex == 0) {
-            basePower = 1;
-            rate = 1.1F;
-        } else if (itemIndex == 1) {
-            basePower = 1;
-        } else {
-            basePower = (float) (10 * Math.pow(3, itemIndex - 1));
-        }
-        if (itemLevel <= 0) {
-            itemLevel = 1;
-        }
-        return (float) Math.max(itemLevel, basePower * Math.pow(rate, itemLevel - 1));
-    }
-
-    public static float getUpdatePrice(int itemIndex, int itemLevel) {
-        float rate = 1.1F;
-        float basePrice = 0;
-        if (itemIndex < 0) {
-            if (DEBUG) {
-                Log.d(TAG, "getUpdatePrice: ");
-                throw new IllegalArgumentException("itemIndex < 0");
-            }
-        } else if (itemIndex == 0) {
-            basePrice = 11;
-            rate = 1.15F;
-        } else if (itemIndex == 1) {
-            if (itemLevel == 0) {
-                basePrice = 1;
-            } else {
-                basePrice = 10;
-            }
-        } else {
-            basePrice = (float) (300 * Math.pow(6, itemIndex - 2));
-        }
-        return (float) Math.max(itemLevel, basePrice * Math.pow(rate, itemLevel));
-    }
-
-
 
     /**
      * Kilo     K   1K字节 = 1，024字节
@@ -97,11 +43,7 @@ public final class GameExtra {
 
     private static String format(double value, DecimalFormat df) {
         if (value < 0) {
-            if (DEBUG) {
-                Log.d(TAG, "format: value = " + value);
-                throw new IllegalArgumentException("value < 0, value = " + value);
-            }
-            return "";
+            return "0";
         }
         if (value < K) {
             return Math.round(value) + "";

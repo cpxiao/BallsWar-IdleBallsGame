@@ -24,9 +24,13 @@ public class EnemyBall extends Sprite {
         this.value = value;
     }
 
+    public float getValue() {
+        return value;
+    }
+
     public void deleteValue(float value) {
         this.value -= value;
-        if (this.value <= 0) {
+        if (this.value < 1) {
             this.value = 0;
             destroy();
         }
@@ -36,7 +40,7 @@ public class EnemyBall extends Sprite {
     @Override
     public void onDraw(Canvas canvas, Paint paint) {
         super.onDraw(canvas, paint);
-        paint.setColor(Color.RED);
+        paint.setColor(Color.GREEN);
         canvas.drawCircle(getCenterX(), getCenterY(), 0.5F * getWidth(), paint);
 
         paint.setColor(Color.BLACK);

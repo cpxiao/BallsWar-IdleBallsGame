@@ -5,5 +5,5 @@ package com.cpxiao.idleballz;
  */
 
 public interface OnItemClicked {
-    void onItemClicked(int index, float price);
+    void onItemClicked(int index, float price, int level);
 }

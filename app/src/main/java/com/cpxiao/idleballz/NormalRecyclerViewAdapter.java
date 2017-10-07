@@ -13,10 +13,8 @@ import android.widget.TextView;
 
 import com.cpxiao.AppConfig;
 import com.cpxiao.R;
-import com.cpxiao.androidutils.library.utils.PreferencesUtils;
 import com.cpxiao.idleballz.mode.ItemData;
 import com.cpxiao.idleballz.mode.extra.BallsExtra;
-import com.cpxiao.idleballz.mode.extra.Extra;
 import com.cpxiao.idleballz.mode.extra.GameExtra;
 
 import java.util.List;
@@ -50,16 +48,22 @@ public class NormalRecyclerViewAdapter extends RecyclerView.Adapter<NormalRecycl
     @Override
     public void onBindViewHolder(NormalViewHolder holder, int position) {
         if (holder == null || mDataList == null) {
+            if (DEBUG) {
+                throw new IllegalArgumentException("holder == null || mDataList == null");
+            }
             return;
         }
         if (position < 0 || position >= mDataList.size()) {
+            if (DEBUG) {
+                throw new IllegalArgumentException("position < 0 || position >= mDataList.size()");
+            }
             return;
         }
         final int index = holder.getAdapterPosition();
         final ItemData data = mDataList.get(index);
         holder.mTitle.setText(data.title);
         if (data.level > 0) {
-            holder.mLevel.setText(mContext.getString(R.string.level) + data.level);
+            holder.mLevel.setText(mContext.getString(R.string.level) + " " + data.level);
         } else {
             holder.mLevel.setText("");
         }
@@ -77,13 +81,16 @@ public class NormalRecyclerViewAdapter extends RecyclerView.Adapter<NormalRecycl
                     }
                     //the item ball level/power/price up
                     data.level++;
-                    PreferencesUtils.putInt(mContext, Extra.Key.getItemLevelKey(index), data.level);
                     data.power = BallsExtra.getPower(index, data.level);
                     data.updatePrice = BallsExtra.getUpdatePrice(index, data.level);
 
                     //the game view ball power up
                     if (mOnItemClicked != null) {
-                        mOnItemClicked.onItemClicked(index, data.updatePrice);
+                        mOnItemClicked.onItemClicked(index, data.updatePrice, data.level);
+                    } else {
+                        if (DEBUG) {
+                            Log.d(TAG, "onClick: ....mOnItemClicked == null");
+                        }
                     }
                 }
             });
