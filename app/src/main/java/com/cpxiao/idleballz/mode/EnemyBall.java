@@ -40,10 +40,18 @@ public class EnemyBall extends Sprite {
     @Override
     public void onDraw(Canvas canvas, Paint paint) {
         super.onDraw(canvas, paint);
+        float r = (float) (0.5F * getWidth() + 0.02F * getWidth() * Math.sin(getFrame() / 10));
         paint.setColor(Color.GREEN);
-        canvas.drawCircle(getCenterX(), getCenterY(), 0.5F * getWidth(), paint);
+        paint.setAlpha(144);
+        canvas.drawCircle(getCenterX(), getCenterY(), 1.2F * r, paint);
+
+        paint.setColor(Color.GREEN);
+        paint.setAlpha(255);
+        canvas.drawCircle(getCenterX(), getCenterY(), r, paint);
+
 
         paint.setColor(Color.BLACK);
+        paint.setTextSize(0.6F * r);
         canvas.drawText(GameExtra.format1(value), getCenterX(), getCenterY() + 0.1F * getHeight(), paint);
     }
 

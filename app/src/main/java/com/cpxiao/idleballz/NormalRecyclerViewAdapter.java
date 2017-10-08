@@ -61,7 +61,7 @@ public class NormalRecyclerViewAdapter extends RecyclerView.Adapter<NormalRecycl
         }
         final int index = holder.getAdapterPosition();
         final ItemData data = mDataList.get(index);
-        holder.mTitle.setText(data.title);
+        //        holder.mTitle.setText(data.title);
         if (data.level > 0) {
             holder.mLevel.setText(mContext.getString(R.string.level) + " " + data.level);
         } else {
@@ -77,21 +77,9 @@ public class NormalRecyclerViewAdapter extends RecyclerView.Adapter<NormalRecycl
                 @Override
                 public void onClick(View v) {
                     if (DEBUG) {
-                        Log.d(TAG, "onClick: ......");
+                        Log.d(TAG, "onClick: ");
                     }
-                    //the item ball level/power/price up
-                    data.level++;
-                    data.power = BallsExtra.getPower(index, data.level);
-                    data.updatePrice = BallsExtra.getUpdatePrice(index, data.level);
-
-                    //the game view ball power up
-                    if (mOnItemClicked != null) {
-                        mOnItemClicked.onItemClicked(index, data.updatePrice, data.level);
-                    } else {
-                        if (DEBUG) {
-                            Log.d(TAG, "onClick: ....mOnItemClicked == null");
-                        }
-                    }
+                    clicked(data, index);
                 }
             });
         } else {
@@ -106,13 +94,29 @@ public class NormalRecyclerViewAdapter extends RecyclerView.Adapter<NormalRecycl
         }
     }
 
+    private void clicked(ItemData data, int index) {
+        //the item ball level/power/price up
+        data.level++;
+        data.power = BallsExtra.getPower(index, data.level);
+        data.updatePrice = BallsExtra.getUpdatePrice(index, data.level);
+
+        //the game view ball power up
+        if (mOnItemClicked != null) {
+            mOnItemClicked.onItemClicked(index, data.updatePrice, data.level);
+        } else {
+            if (DEBUG) {
+                Log.d(TAG, "onClick: ....mOnItemClicked == null");
+            }
+        }
+    }
+
     @Override
     public int getItemCount() {
         return mDataList == null ? 0 : mDataList.size();
     }
 
     class NormalViewHolder extends RecyclerView.ViewHolder {
-        TextView mTitle;
+        //        TextView mTitle;
         TextView mLevel;
         ImageView mIcon;
         TextView mPower;
@@ -122,7 +126,7 @@ public class NormalRecyclerViewAdapter extends RecyclerView.Adapter<NormalRecycl
 
         NormalViewHolder(View itemView) {
             super(itemView);
-            mTitle = (TextView) itemView.findViewById(R.id.title);
+            //            mTitle = (TextView) itemView.findViewById(R.id.title);
             mLevel = (TextView) itemView.findViewById(R.id.level);
             mIcon = (ImageView) itemView.findViewById(R.id.icon);
             mPower = (TextView) itemView.findViewById(R.id.power);

@@ -161,7 +161,7 @@ public class GameView extends BaseSurfaceViewFPS {
 
         int indexX = mCreatedEnemyCount / 4;
         int indexY = mCreatedEnemyCount % 4;
-        float enemyBallWH = 0.1F * Math.min(mMovingRangeRectF.width(), mMovingRangeRectF.height());
+        float enemyBallWH = 0.11F * Math.min(mMovingRangeRectF.width(), mMovingRangeRectF.height());
         mCreatedEnemyCount++;
         float quarterW = mMovingRangeRectF.width() / 4;
         float quarterH = mMovingRangeRectF.height() / 4;

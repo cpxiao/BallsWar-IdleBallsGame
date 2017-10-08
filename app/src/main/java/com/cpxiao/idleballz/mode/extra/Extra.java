@@ -11,7 +11,7 @@ public final class Extra {
          * 金钱
          */
         public static final String COIN = "COIN";
-        public static final float COIN_DEFAULT = 10;
+        public static final float COIN_DEFAULT = 1000F;
 
         /**
          * 关卡
