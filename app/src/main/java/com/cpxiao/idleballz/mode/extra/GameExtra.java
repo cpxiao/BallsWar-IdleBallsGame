@@ -22,26 +22,32 @@ public final class GameExtra {
      * Zetta    Z   1Z字节 = 1，180，591，620，717，411，303，424字节
      * Yotta    Y   1Y字节 = 1，208，925，819，614，629，174，706，176字节
      */
-    private static final double K = 1000.0;
-    private static final double M = 1000000.0;
-    private static final double G = 1000000000.0;
-    private static final double T = 1000000000000.0;
-    private static final double P = 1000000000000000.0;
-    private static final double E = 1000000000000000000.0;
-    private static final double Z = 1000000000000000000000.0;
-    private static final double Y = 1000000000000000000000000.0;
+    private static final float K = 1000.0F;
+    private static final float M = 1000000.0F;
+    private static final float G = 1000000000.0F;
+    private static final float T = 1000000000000.0F;
+    private static final float P = 1000000000000000.0F;
+    private static final float E = 1000000000000000000.0F;
+    private static final float Z = 1000000000000000000000.0F;
+    private static final float Y = 1000000000000000000000000.0F;
 
-    public static String format1(double price) {
+    public static String format1(float price) {
+        if (DEBUG) {
+//            Log.d(TAG, "format1: ");
+        }
         DecimalFormat df = new DecimalFormat("######0.0");
         return format(price, df);
     }
 
-    public static String format2(double power) {
+    public static String format2(float power) {
+        if (DEBUG) {
+//            Log.d(TAG, "format2: ");
+        }
         DecimalFormat df = new DecimalFormat("######0.00");
         return format(power, df);
     }
 
-    private static String format(double value, DecimalFormat df) {
+    private static String format(float value, DecimalFormat df) {
         if (value < 0) {
             return "0";
         }

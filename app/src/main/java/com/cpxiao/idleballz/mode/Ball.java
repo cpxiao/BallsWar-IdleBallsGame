@@ -2,17 +2,19 @@ package com.cpxiao.idleballz.mode;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.util.Log;
 
 import com.cpxiao.gamelib.mode.common.Sprite;
 import com.cpxiao.gamelib.mode.common.SpriteControl;
 import com.cpxiao.idleballz.views.GameView;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import hugo.weaving.DebugLog;
 
 /**
  * @author cpxiao on 2017/9/27.
@@ -58,6 +60,7 @@ public class Ball extends Sprite {
         mCurrentBitmap = mBitmapArray[(int) ((getFrame()) % mBitmapArray.length)];
     }
 
+    @DebugLog
     @Override
     protected void beforeDraw(Canvas canvas, Paint paint) {
         super.beforeDraw(canvas, paint);
@@ -82,6 +85,7 @@ public class Ball extends Sprite {
 
     private Rect mBitmapRect = new Rect();
 
+    @DebugLog
     @Override
     public void onDraw(Canvas canvas, Paint paint) {
         super.onDraw(canvas, paint);
@@ -94,10 +98,8 @@ public class Ball extends Sprite {
             mBitmapRect.bottom = bitmap.getHeight();
             canvas.drawBitmap(bitmap, mBitmapRect, getSpriteRectF(), paint);
         } else {
-            if (DEBUG) {
-//                paint.setColor(Color.BLUE);
-                canvas.drawCircle(getCenterX(), getCenterY(), 0.5F * getWidth(), paint);
-            }
+            paint.setColor(Color.BLUE);
+            canvas.drawCircle(getCenterX(), getCenterY(), 0.5F * getWidth(), paint);
         }
     }
 
@@ -122,12 +124,6 @@ public class Ball extends Sprite {
                 float delta = Math.abs(startAngle - baseAngle);
                 if (delta >= 90 && delta <= 270) {
                     continue;
-                }
-                if (false && DEBUG) {
-                    Log.d(TAG, "setupBalls: start = " + startAngle
-                            + ", base = " + baseAngle
-                            + ", end = " + endAngle
-                            + ", delta = " + delta);
                 }
                 float value = Math.min(power, enemyBall.getValue());
                 enemyBall.deleteValue(value);

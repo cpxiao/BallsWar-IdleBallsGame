@@ -15,7 +15,7 @@ import com.cpxiao.androidutils.library.utils.PreferencesUtils;
 import com.cpxiao.gamelib.mode.common.Sprite;
 import com.cpxiao.gamelib.mode.common.SpriteControl;
 import com.cpxiao.gamelib.views.BaseSurfaceViewFPS;
-import com.cpxiao.idleballz.OnGameListener;
+import com.cpxiao.idleballz.imps.OnGameListener;
 import com.cpxiao.idleballz.mode.Ball;
 import com.cpxiao.idleballz.mode.EnemyBall;
 import com.cpxiao.idleballz.mode.extra.BallsExtra;
@@ -26,6 +26,8 @@ import com.cpxiao.idleballz.mode.ui.UIProgressBar;
 import com.cpxiao.idleballz.mode.ui.UIText;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
+
+import hugo.weaving.DebugLog;
 
 /**
  * @author cpxiao on 2017/9/27.
@@ -184,12 +186,19 @@ public class GameView extends BaseSurfaceViewFPS {
         mEnemyBallQueue.add(enemyBall);
     }
 
+    @DebugLog
     @Override
     public void drawCache() {
         drawSpriteQueue(mCanvasCache, mPaint);
 
         mTitleBarBg.draw(mCanvasCache, mPaint);
 
+        if (mCoin < 0) {
+            mCoin = 0;
+            if (DEBUG) {
+                throw new IllegalArgumentException("mCoin < 0");
+            }
+        }
         mCoinText.setText(GameExtra.format1(mCoin));
         mCoinText.draw(mCanvasCache, mPaint);
 
@@ -200,6 +209,7 @@ public class GameView extends BaseSurfaceViewFPS {
         mGameLevelText.draw(mCanvasCache, mPaint);
     }
 
+    @DebugLog
     private void drawSpriteQueue(Canvas canvas, Paint paint) {
         for (Sprite sprite : mEnemyBallQueue) {
             sprite.draw(canvas, paint);
@@ -258,7 +268,9 @@ public class GameView extends BaseSurfaceViewFPS {
     }
 
     public void deleteCoin(float coin) {
-        mCoin -= coin;
+        if (mCoin > coin) {
+            mCoin -= coin;
+        }
         if (mOnGameListener != null) {
             mOnGameListener.onCoinChange(mCoin);
         }

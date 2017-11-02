@@ -8,6 +8,8 @@ import android.graphics.Paint;
 import com.cpxiao.gamelib.mode.common.Sprite;
 import com.cpxiao.idleballz.mode.extra.GameExtra;
 
+import hugo.weaving.DebugLog;
+
 /**
  * @author cpxiao on 2017/9/27.
  */
@@ -37,10 +39,11 @@ public class EnemyBall extends Sprite {
     }
 
 
+    @DebugLog
     @Override
     public void onDraw(Canvas canvas, Paint paint) {
         super.onDraw(canvas, paint);
-        float r = (float) (0.5F * getWidth() + 0.02F * getWidth() * Math.sin(getFrame() / 10));
+        float r = (float) (0.5F * getWidth() + 0.02F * getWidth() * Math.sin(1.0F * getFrame() / 10));
         paint.setColor(Color.GREEN);
         paint.setAlpha(144);
         canvas.drawCircle(getCenterX(), getCenterY(), 1.2F * r, paint);
@@ -48,7 +51,6 @@ public class EnemyBall extends Sprite {
         paint.setColor(Color.GREEN);
         paint.setAlpha(255);
         canvas.drawCircle(getCenterX(), getCenterY(), r, paint);
-
 
         paint.setColor(Color.BLACK);
         paint.setTextSize(0.6F * r);

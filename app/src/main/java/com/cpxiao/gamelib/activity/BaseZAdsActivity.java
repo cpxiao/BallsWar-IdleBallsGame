@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.LinearLayout;
 
-import com.cpxiao.AppConfig;
 import com.cpxiao.R;
 import com.cpxiao.zads.ZAdManager;
 import com.facebook.ads.Ad;
@@ -27,25 +26,12 @@ import com.umeng.analytics.MobclickAgent;
  *          cpxiao on 2017/9/4     修改继承类, extends BaseAdsActivity
  */
 public abstract class BaseZAdsActivity extends BaseAdsActivity {
-    protected static final boolean DEBUG = AppConfig.DEBUG;
-    protected final String TAG = getClass().getSimpleName();
-
-    protected final String TEST_DEVICE_FB = "";
-    protected final String TEST_DEVICE_ADMOB = "E1E0F81BBFC3DDCC151FE415046C6E40";
-
     private InterstitialAd mAdMobInterstitialAd;
     private com.facebook.ads.InterstitialAd mFbInterstitialAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //        //no title
-        //        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        //
-        //        //隐藏状态栏部分（电池电量、时间等部分）
-        //        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-
     }
 
     @Override

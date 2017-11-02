@@ -4,19 +4,30 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.cpxiao.R;
 import com.cpxiao.androidutils.library.utils.PreferencesUtils;
-import com.cpxiao.gamelib.fragment.BaseZAdsFragment;
-import com.cpxiao.idleballz.NormalRecyclerViewAdapter;
-import com.cpxiao.idleballz.OnGameListener;
-import com.cpxiao.idleballz.OnItemClicked;
-import com.cpxiao.idleballz.mode.ItemData;
+import com.cpxiao.gamelib.fragment.BaseVideoAdsFragment;
+import com.cpxiao.idleballz.adapter.BallsRecyclerViewAdapter;
+import com.cpxiao.idleballz.adapter.BoostersRecyclerViewAdapter;
+import com.cpxiao.idleballz.adapter.SettingsRecyclerViewAdapter;
+import com.cpxiao.idleballz.imps.OnBallItemClicked;
+import com.cpxiao.idleballz.imps.OnBoostersItemClicked;
+import com.cpxiao.idleballz.imps.OnGameListener;
+import com.cpxiao.idleballz.mode.data.BallItemData;
+import com.cpxiao.idleballz.mode.data.BoosterItemData;
+import com.cpxiao.idleballz.mode.data.SettingsItemData;
 import com.cpxiao.idleballz.mode.extra.BallsExtra;
+import com.cpxiao.idleballz.mode.extra.BoostersExtra;
 import com.cpxiao.idleballz.mode.extra.Extra;
+import com.cpxiao.idleballz.mode.extra.SettingsExtra;
 import com.cpxiao.idleballz.views.GameView;
+import com.cpxiao.zads.core.ZAdPosition;
 
 import java.util.List;
 
@@ -24,11 +35,22 @@ import java.util.List;
  * @author cpxiao on 2017/9/27.
  */
 
-public class GameFragment extends BaseZAdsFragment {
-    private NormalRecyclerViewAdapter mAdapter;
+public class GameFragment extends BaseVideoAdsFragment implements View.OnClickListener {
+    private BallsRecyclerViewAdapter mBallsRecyclerViewAdapter;
+    private BoostersRecyclerViewAdapter mBoostersRecyclerViewAdapter;
+    private SettingsRecyclerViewAdapter mSettingsRecyclerViewAdapter;
     private GameView mGameView;
+    private Button mBallsBtn;
+    private Button mBoostersBtn;
+    private Button mSettingsBtn;
     private RecyclerView mRecyclerView;
-    private List<ItemData> mDataList;
+
+
+    private List<BallItemData> mBallDataList;
+    private List<BoosterItemData> mBoosterDataList;
+    private List<SettingsItemData> mSettingsDataList;
+
+    private int updateCount = 0;
 
     public static GameFragment newInstance(Bundle bundle) {
         GameFragment fragment = new GameFragment();
@@ -38,20 +60,26 @@ public class GameFragment extends BaseZAdsFragment {
         return fragment;
     }
 
-    int updateCount = 0;
+    @Override
+    protected int getLayoutId() {
+        return R.layout.fragment_game;
+    }
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
         final Context context = getHoldingActivity();
-        mDataList = BallsExtra.getDataList(context);
+        loadZAds(ZAdPosition.POSITION_GAME);
+        mBallDataList = BallsExtra.getDataList(context);
+        mBoosterDataList = BoostersExtra.getDataList(context);
+        mSettingsDataList = SettingsExtra.getDataList(context);
 
         mGameView = (GameView) view.findViewById(R.id.game_view);
         mGameView.setOnGameListener(new OnGameListener() {
             @Override
             public void onCoinChange(float coin) {
-                int currentUpdateCount = BallsExtra.getUpdateCount(coin, mDataList);
+                int currentUpdateCount = BallsExtra.getUpdateCount(coin, mBallDataList);
                 if (updateCount != currentUpdateCount) {
-                    mDataList = BallsExtra.parseList(coin, mDataList);
+                    mBallDataList = BallsExtra.parseList(coin, mBallDataList);
                     mGameView.post(mRunnable);
                     updateCount = currentUpdateCount;
                 }
@@ -59,27 +87,115 @@ public class GameFragment extends BaseZAdsFragment {
             }
         });
 
+        mBallsBtn = (Button) view.findViewById(R.id.btn_balls);
+        mBoostersBtn = (Button) view.findViewById(R.id.btn_boosters);
+        mSettingsBtn = (Button) view.findViewById(R.id.btn_settings);
+        mBallsBtn.setOnClickListener(this);
+        mBoostersBtn.setOnClickListener(this);
+        mSettingsBtn.setOnClickListener(this);
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.ballsRecyclerView);
         LinearLayoutManager manager = new LinearLayoutManager(context);
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(manager);
 
 
-        mAdapter = new NormalRecyclerViewAdapter(getContext(), mDataList);
-        mAdapter.setOnItemClicked(new OnItemClicked() {
+        initBallsAdapter(context);
+        initBoostersAdapter(context);
+        initSettingsAdapter(context);
+        loadBall();
+    }
+
+    private void initBallsAdapter(final Context context) {
+        mBallsRecyclerViewAdapter = new BallsRecyclerViewAdapter(getContext(), mBallDataList);
+        mBallsRecyclerViewAdapter.setOnItemClicked(new OnBallItemClicked() {
             @Override
             public void onItemClicked(int index, float price, int level) {
                 if (DEBUG) {
                     Log.d(TAG, "onItemClicked: ");
                 }
-                mAdapter.notifyItemChanged(index);
+                mBallsRecyclerViewAdapter.notifyItemChanged(index);
                 mGameView.deleteCoin(price);
                 mGameView.createNewBall(context, index);
                 PreferencesUtils.putInt(context, Extra.Key.getItemLevelKey(index), level);
             }
         });
-        mRecyclerView.setAdapter(mAdapter);
 
+
+    }
+
+    private void initBoostersAdapter(final Context context) {
+        mBoostersRecyclerViewAdapter = new BoostersRecyclerViewAdapter(getContext(), mBoosterDataList);
+        mBoostersRecyclerViewAdapter.setOnBoostersItemClicked(new OnBoostersItemClicked() {
+            @Override
+            public void onItemClicked(int index) {
+                if (DEBUG) {
+                    Log.d(TAG, "onItemClicked: ....");
+                }
+                if (isRewardedVideoAdLoaded()) {
+                    showVideoAds();
+                    BoosterItemData item = mBoosterDataList.get(index);
+
+                    if (TextUtils.equals(item.title, getString(R.string.boosters_level_up_1))) {
+                        levelUp(context);
+                    } else if (TextUtils.equals(item.title, getString(R.string.boosters_tap_x10))) {
+                        tapX10(context);
+                    } else if (TextUtils.equals(item.title, getString(R.string.boosters_power_x2))) {
+                        powerX2(context);
+                    }
+                } else {
+                    loadRewardedVideoAd();
+                }
+
+            }
+        });
+
+    }
+
+    private void levelUp(Context context) {
+        for (BallItemData item : mBallDataList) {
+            if (item.level > 0) {
+                item.level++;
+            }
+        }
+        Toast.makeText(context, R.string.boosters_level_up_1, Toast.LENGTH_SHORT).show();
+    }
+
+    private void tapX10(Context context) {
+        BallItemData item = mBallDataList.get(0);
+        if (item.level > 0) {
+            item.power *= 10;
+        }
+        Toast.makeText(context, R.string.boosters_tap_x10, Toast.LENGTH_SHORT).show();
+    }
+
+    private void powerX2(Context context) {
+        for (int i = 1; i < mBallDataList.size(); i++) {
+            BallItemData item = mBallDataList.get(i);
+            if (item.level > 0) {
+                item.power *= 2;
+            }
+        }
+        Toast.makeText(context, R.string.boosters_power_x2, Toast.LENGTH_SHORT).show();
+    }
+
+
+    private void initSettingsAdapter(final Context context) {
+        mSettingsRecyclerViewAdapter = new SettingsRecyclerViewAdapter(getContext(), mSettingsDataList);
+
+
+    }
+
+    private void loadBall() {
+        mRecyclerView.setAdapter(mBallsRecyclerViewAdapter);
+    }
+
+    private void loadBooster() {
+        mRecyclerView.setAdapter(mBoostersRecyclerViewAdapter);
+    }
+
+    private void loadSettings() {
+        mRecyclerView.setAdapter(mSettingsRecyclerViewAdapter);
     }
 
     @Override
@@ -90,18 +206,24 @@ public class GameFragment extends BaseZAdsFragment {
         }
     }
 
-    @Override
-    protected int getLayoutId() {
-        return R.layout.fragment_game;
-    }
-
     private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
-            if (mAdapter != null) {
-                mAdapter.notifyDataSetChanged();
+            if (mBallsRecyclerViewAdapter != null) {
+                mBallsRecyclerViewAdapter.notifyDataSetChanged();
             }
         }
     };
 
+    @Override
+    public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.btn_balls) {
+            loadBall();
+        } else if (id == R.id.btn_boosters) {
+            loadBooster();
+        } else if (id == R.id.btn_settings) {
+            loadSettings();
+        }
+    }
 }

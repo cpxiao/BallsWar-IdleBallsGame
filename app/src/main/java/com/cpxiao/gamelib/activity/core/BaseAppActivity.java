@@ -19,13 +19,14 @@ public abstract class BaseAppActivity extends BaseActivity {
 
     //获取Intent
     protected void handleIntent(Intent intent) {
+
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        //no title. requestFeature() must be called before adding content
+        //no level. requestFeature() must be called before adding content
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         //隐藏状态栏部分（电池电量、时间等部分）

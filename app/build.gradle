@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.jakewharton.hugo'
+//apply plugin: 'com.antfortune.freeline'
 
 android {
     compileSdkVersion 25
@@ -7,8 +9,8 @@ android {
         applicationId "com.cpxiao.idleballz"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 105
-        versionName "1.0.5"
+        versionCode 201
+        versionName "2.0.1"
     }
 
     buildTypes {
@@ -67,7 +69,8 @@ dependencies {
      * Ads Start
      */
     //友盟统计
-    compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.umeng.analytics:analytics:6.1.2'
+//    compile 'com.umeng.analytics:analytics:latest.integration'
     //Facebook广告
 //    compile files('libs/AudienceNetwork_v4.7.jar')
 //    compile 'com.facebook.android:audience-network-sdk:4.+'
@@ -85,3 +88,4 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:25.3.1'
 
 }
+apply plugin: 'com.google.gms.google-services'
