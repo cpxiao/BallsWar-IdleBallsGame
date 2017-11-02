@@ -38,7 +38,7 @@ public class BallsRecyclerViewAdapter extends RecyclerView.Adapter<CommonViewHol
     public CommonViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_layout, parent, false);
         RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) view.getLayoutParams();
-        params.width = (int) (parent.getMeasuredWidth() / 4.5F);
+        params.width = (int) (parent.getMeasuredWidth() / 3.5F);
         int marginLR = (int) (Resources.getSystem().getDisplayMetrics().density * 3);
         params.leftMargin = marginLR;
         params.rightMargin = marginLR;
@@ -63,7 +63,6 @@ public class BallsRecyclerViewAdapter extends RecyclerView.Adapter<CommonViewHol
         }
         final int index = holder.getAdapterPosition();
         final BallItemData data = mDataList.get(index);
-        //        holder.mTitle.setText(data.level);
         if (data.level > 0) {
             holder.mTitle.setText(mContext.getString(R.string.level) + " " + data.level);
         } else {
