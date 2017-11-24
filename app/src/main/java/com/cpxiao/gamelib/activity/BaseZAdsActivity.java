@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.widget.LinearLayout;
 
+import com.cpxiao.AppConfig;
 import com.cpxiao.R;
 import com.cpxiao.zads.ZAdManager;
 import com.facebook.ads.Ad;
@@ -26,6 +27,9 @@ import com.umeng.analytics.MobclickAgent;
  *          cpxiao on 2017/9/4     修改继承类, extends BaseAdsActivity
  */
 public abstract class BaseZAdsActivity extends BaseAdsActivity {
+    protected final String TEST_DEVICE_FB = AppConfig.TEST_DEVICE_FB;
+    protected final String TEST_DEVICE_ADMOB = AppConfig.TEST_DEVICE_ADMOB;
+
     private InterstitialAd mAdMobInterstitialAd;
     private com.facebook.ads.InterstitialAd mFbInterstitialAd;
 

@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.cpxiao.R;
 import com.cpxiao.androidutils.library.utils.PreferencesUtils;
+import com.cpxiao.androidutils.library.utils.RateAppUtils;
+import com.cpxiao.androidutils.library.utils.ShareAppUtils;
 import com.cpxiao.gamelib.fragment.BaseVideoAdsFragment;
 import com.cpxiao.idleballz.adapter.BallsRecyclerViewAdapter;
 import com.cpxiao.idleballz.adapter.BoostersRecyclerViewAdapter;
@@ -67,8 +69,9 @@ public class GameFragment extends BaseVideoAdsFragment implements View.OnClickLi
 
     @Override
     protected void initView(View view, Bundle savedInstanceState) {
-        final Context context = getHoldingActivity();
         loadZAds(ZAdPosition.POSITION_GAME);
+
+        final Context context = getHoldingActivity();
         mBallDataList = BallsExtra.getDataList(context);
         mBoosterDataList = BoostersExtra.getDataList(context);
         mSettingsDataList = SettingsExtra.getDataList(context);
@@ -144,6 +147,7 @@ public class GameFragment extends BaseVideoAdsFragment implements View.OnClickLi
                         powerX2(context);
                     }
                 } else {
+                    Toast.makeText(context, R.string.video_not_ready_msg, Toast.LENGTH_SHORT).show();
                     loadRewardedVideoAd();
                 }
 
@@ -182,7 +186,29 @@ public class GameFragment extends BaseVideoAdsFragment implements View.OnClickLi
 
     private void initSettingsAdapter(final Context context) {
         mSettingsRecyclerViewAdapter = new SettingsRecyclerViewAdapter(getContext(), mSettingsDataList);
+        mSettingsRecyclerViewAdapter.setOnBoostersItemClicked(new OnBoostersItemClicked() {
+            @Override
+            public void onItemClicked(int index) {
+                if (DEBUG) {
+                    Log.d(TAG, "onItemClicked: ....");
+                }
+                SettingsItemData item = mSettingsDataList.get(index);
 
+                if (TextUtils.equals(item.title, getString(R.string.rate_app))) {
+                    RateAppUtils.rate(context);
+                } else if (TextUtils.equals(item.title, getString(R.string.share))) {
+                    String msg = getString(R.string.share_msg) + "\n" +
+                            getString(R.string.app_name) + "\n" +
+                            "https://play.google.com/store/apps/details?id=" + context.getPackageName();
+                    ShareAppUtils.share(context, getString(R.string.share), msg);
+                } else if (TextUtils.equals(item.title, getString(R.string.settings_sound))) {
+
+                } else if (TextUtils.equals(item.title, getString(R.string.settings_music))) {
+
+                }
+
+            }
+        });
 
     }
 

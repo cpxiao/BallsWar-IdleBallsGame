@@ -14,6 +14,4 @@ public abstract class BaseZAdsFragment extends BaseFragment {
             activity.loadZAds(position);
         }
     }
-
-
 }

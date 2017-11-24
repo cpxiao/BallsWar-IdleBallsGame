@@ -22,15 +22,16 @@ public final class SettingsExtra {
 
     private static final int INDEX_TITLE_ID = 0;
     private static final int INDEX_DRAWABLE_ID = 1;
+    private static final int INDEX_BTN_MSG = 2;
 
-    private static final int[] newBall0 = {R.string.settings_music, R.drawable._0tap};
-    private static final int[] newBall1 = {R.string.settings_sound, R.drawable._1};
-    private static final int[] newBall2 = {R.string.settings, R.drawable._2};
+    private static final int[] settings0 = {R.string.rate_app, R.drawable.ic_rate, R.string.rate_app};
+    private static final int[] settings1 = {R.string.share, R.drawable.ic_share, R.string.share};
+    private static final int[] settings2 = {R.string.settings_sound, R.drawable.ic_sound, R.string.settings_sound};
 
     private static final int[][] ITEM_ARRAY = {
-            newBall0,
-            newBall1,
-            newBall2
+            settings0,
+            settings1,
+            settings2,
     };
 
     public static List<SettingsItemData> getDataList(Context context) {
@@ -38,7 +39,9 @@ public final class SettingsExtra {
         for (int[] item : ITEM_ARRAY) {
             SettingsItemData itemData = new SettingsItemData();
             itemData.title = context.getString(item[INDEX_TITLE_ID]);
+            //            itemData.title = "";
             itemData.drawable = ContextCompat.getDrawable(context, item[INDEX_DRAWABLE_ID]);
+            itemData.btnMsg = context.getString(item[INDEX_BTN_MSG]);
             list.add(itemData);
         }
 

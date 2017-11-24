@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
+import com.cpxiao.AppConfig;
 import com.cpxiao.R;
 import com.cpxiao.gamelib.activity.core.BaseAppActivity;
 import com.facebook.ads.Ad;
@@ -26,11 +27,11 @@ import com.umeng.analytics.MobclickAgent;
  *          cpxiao on 2017/8/31   修改继承类
  */
 public abstract class BaseAdsActivity extends BaseAppActivity {
-    protected final String TEST_DEVICE_FB = BaseTestDevice.TEST_DEVICE_FB;
-    protected final String TEST_DEVICE_ADMOB = BaseTestDevice.TEST_DEVICE_ADMOB;
+    protected final String TEST_DEVICE_FB = AppConfig.TEST_DEVICE_FB;
+    protected final String TEST_DEVICE_ADMOB = AppConfig.TEST_DEVICE_ADMOB;
 
     protected com.google.android.gms.ads.AdView mAdMobAdView;
-    protected com.facebook.ads.AdView mFbAdView;
+    protected AdView mFbAdView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +140,7 @@ public abstract class BaseAdsActivity extends BaseAppActivity {
         if (DEBUG) {
             adRequest = new AdRequest.Builder()
                     .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)// All emulators
-                    .addTestDevice(TEST_DEVICE_ADMOB)//坚果
+                    .addTestDevice(TEST_DEVICE_ADMOB)
                     .build();
         } else {
             adRequest = new AdRequest.Builder()

@@ -28,7 +28,6 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:text="@string/settings"
-        android:textColor="@android:color/black"
-        android:visibility="gone"/>
+        android:textColor="@android:color/black"/>
 
 </LinearLayout>

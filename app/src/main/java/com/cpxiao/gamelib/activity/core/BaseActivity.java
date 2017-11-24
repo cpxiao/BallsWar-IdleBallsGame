@@ -57,7 +57,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     private void showQuitConfirmDialog() {
         Dialog dialog = new AlertDialog.Builder(this)
-                //                .setTitle(R.string.quit_msg)
                 .setMessage(R.string.quit_msg)
                 .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
@@ -73,8 +72,8 @@ public abstract class BaseActivity extends AppCompatActivity {
                     }
                 })
                 .create();
-        //            dialog.setCancelable(true);
-        //            dialog.setCanceledOnTouchOutside(true);
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(true);
         dialog.show();
     }
 }

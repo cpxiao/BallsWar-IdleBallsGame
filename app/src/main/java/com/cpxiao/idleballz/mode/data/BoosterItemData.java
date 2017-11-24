@@ -5,5 +5,4 @@ package com.cpxiao.idleballz.mode.data;
  */
 
 public class BoosterItemData extends CommonItemData{
-    public String title;
 }
